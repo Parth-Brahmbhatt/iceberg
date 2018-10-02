@@ -292,8 +292,10 @@ project(':iceberg-presto-runtime') {
 
         shadow "org.apache.parquet:parquet-avro:$parquetVersion"
         shadow "org.apache.avro:avro:$avroVersion"
-        shadow "org.apache.orc:orc-core:$orcVersion:nohive"
-        shadow "org.apache.hive:hive-standalone-metastore:$hiveVersion"
+        shadow ('org.apache.hive:hive-standalone-metastore:3.1.0') {
+            exclude group: 'org.apache.hadoop', module: 'hadoop-common'
+            exclude group: 'org.apache.orc', module: 'orc-core'
+        }
     }
 
     tasks.build.dependsOn tasks.shadowJar
@@ -304,31 +306,7 @@ project(':iceberg-presto-runtime') {
         zip64 true
         exclude 'org/htrace/**'
         exclude 'org/objectweb/**'
-
-        exclude 'org/apache/hadoop/io'
-        exclude 'org/apache/hadoop/util'
-        exclude 'org/apache/hadoop/registry'
-        exclude 'org/apache/hadoop/mapred'
-        exclude 'org/apache/hadoop/http'
-        exclude 'org/apache/hadoop/hbase'
-        exclude 'org/apache/hadoop/ha'
-        exclude 'org/apache/hadoop/crypto'
-        exclude 'org/apache/hadoop/conf'
-        exclude 'org/apache/hadoop/tracing'
-        exclude 'org/apache/hadoop/tools'
-        exclude 'org/apache/hadoop/service'
-        exclude 'org/apache/hadoop/net'
-        exclude 'org/apache/hadoop/metrics2'
-        exclude 'org/apache/hadoop/log'
-        exclude 'org/apache/hadoop/jmx'
-        exclude 'org/apache/hadoop/ipc'
-        exclude 'org/apache/hadoop/io'
-        exclude 'org/apache/hadoop/hdfs'
-        exclude 'org/apache/hadoop/fs'
-        exclude 'org/apache/hadoop/util'
-        exclude 'org/apache/hadoop/security'
-        exclude 'org/apache/hadoop/yarn'
-        exclude 'org/apache/hadoop/classification'
+        exclude 'org/apache/thrift/**'
         exclude 'META-INF/services/org.apache.hadoop**'
         exclude 'com/thoughtworks/**'
         exclude 'org/slf4j/**'
